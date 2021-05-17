@@ -46,6 +46,8 @@ public class GridSpawner : MonoBehaviour
                 Vector2 pos = grid[x, y].position;
                 Transform pipe = Instantiate<Transform>(pipeStraight, pos, Quaternion.identity);
                 pipe.parent = grid[x, y];
+                //sets the content field of the FrameBehaviour instance
+                pipe.parent.GetComponent<FrameBehaviour>().SetContent("pipe");
             }
         }
     }
