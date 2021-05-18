@@ -31,6 +31,7 @@ public class GridSpawner : MonoBehaviour
 
     void Start()
     {
+        //prefabNamePair class created for multi-typed list
         prefabNamePairs = new List<prefabNamePair>()
         {
             new prefabNamePair(pipeStraight, "pipe"),
@@ -67,7 +68,7 @@ public class GridSpawner : MonoBehaviour
             {
                 prefabNamePair curPair = prefabNamePairs[Random.Range(0, prefabNamePairs.Count)];
 
-                //iterates over every frame in grid and creates a pipe (should be random pipe)
+                //iterates over every frame in grid and creates a pipe
                 Vector2 pos = grid[x, y].position;
                 Transform pipe = Instantiate<Transform>(curPair.prefab, pos, Quaternion.identity);
                 pipe.parent = grid[x, y];
