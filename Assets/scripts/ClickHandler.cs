@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ClickHandler : MonoBehaviour
 {
-    public Camera mCamera;
-
-    void Start()
-    {
-        mCamera = Camera.main;
-    }
+    public event Action<OnClickEventArgs> onClickEvent;
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hitInfo = Physics2D.Raycast(mCamera.transform.position, Input.mousePosition);
-            if (hitInfo)
+            //sends onClickEvent with mouse position arg
+            onClickEvent(new OnClickEventArgs
             {
-                hitInfo.transform.gameObject.GetComponent<FrameBehaviour>().HandleOnClick();
-            }
+                pos = Camera.main.ScreenToWorldPoint(Input.mousePosition)
+            });
         }
+    }
+
+    public class OnClickEventArgs : EventArgs
+    {
+        public Vector3 pos;
     }
 }

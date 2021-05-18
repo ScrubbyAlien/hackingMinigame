@@ -8,12 +8,35 @@ public class GridSpawner : MonoBehaviour
     public Transform pipeStraight;
     public Transform pipeCorner;
 
-    Transform[,] grid;
+    [HideInInspector]
+    public Transform[,] grid;
     Vector2Int gridSize;
     Vector2 startPos;
 
+    Transform[] pipes;
+
+    class prefabNamePair
+    {
+        public Transform prefab;
+        public string name;
+
+        public prefabNamePair(Transform mPrefab, string mName)
+        {
+            prefab = mPrefab;
+            name = mName;
+        }
+    }
+
+    List<prefabNamePair> prefabNamePairs;
+
     void Start()
     {
+        prefabNamePairs = new List<prefabNamePair>()
+        {
+            new prefabNamePair(pipeStraight, "pipe"),
+            new prefabNamePair(pipeCorner, "pipe")
+        };
+
         startPos = new Vector2(-4, 4);
         gridSize = new Vector2Int(8, 8);
         grid = new Transform[gridSize.x, gridSize.y];
@@ -42,12 +65,14 @@ public class GridSpawner : MonoBehaviour
         {
             for (int y = 0; y < gridSize.y; y++)
             {
+                prefabNamePair curPair = prefabNamePairs[Random.Range(0, prefabNamePairs.Count)];
+
                 //iterates over every frame in grid and creates a pipe (should be random pipe)
                 Vector2 pos = grid[x, y].position;
-                Transform pipe = Instantiate<Transform>(pipeStraight, pos, Quaternion.identity);
+                Transform pipe = Instantiate<Transform>(curPair.prefab, pos, Quaternion.identity);
                 pipe.parent = grid[x, y];
                 //sets the content field of the FrameBehaviour instance
-                pipe.parent.GetComponent<FrameBehaviour>().SetContent("pipe");
+                pipe.parent.GetComponent<FrameBehaviour>().SetContent(curPair.name);
             }
         }
     }

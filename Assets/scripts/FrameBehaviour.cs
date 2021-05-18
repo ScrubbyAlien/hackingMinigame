@@ -12,14 +12,11 @@ public class FrameBehaviour : MonoBehaviour
     void Start()
     {
         contentTransform = transform.GetChild(0).transform;
-        Debug.Log(content.ToString());
+        FindObjectOfType<ClickHandler>().onClickEvent += ReceiveClickEvent;
     }
 
     public void HandleOnClick()
     {
-        Debug.Log("click");
-        Debug.Log(content.ToString());
-
         switch (content)
         {
             case ContentManager.Thing.Pipe:
@@ -40,5 +37,15 @@ public class FrameBehaviour : MonoBehaviour
     public void SetContent(string con)
     {
         content = ContentManager.stringToEnum[con];
+    }
+
+    public void ReceiveClickEvent(ClickHandler.OnClickEventArgs args)
+    {
+        //receives the onClick event call from ClickHandler script
+        Vector2 pos = args.pos;
+        if (transform.GetComponent<BoxCollider2D>().OverlapPoint(pos))
+        {
+            HandleOnClick();
+        }
     }
 }
