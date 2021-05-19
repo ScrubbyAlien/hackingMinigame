@@ -19,11 +19,13 @@ public class GridSpawner : MonoBehaviour
     {
         public Transform prefab;
         public string name;
+        public float[] angles;
 
-        public prefabNamePair(Transform mPrefab, string mName)
+        public prefabNamePair(Transform mPrefab, string mName, float[] mAngles)
         {
             prefab = mPrefab;
             name = mName;
+            angles = mAngles;
         }
     }
 
@@ -34,8 +36,8 @@ public class GridSpawner : MonoBehaviour
         //prefabNamePair class created for multi-typed list
         prefabNamePairs = new List<prefabNamePair>()
         {
-            new prefabNamePair(pipeStraight, "pipe"),
-            new prefabNamePair(pipeCorner, "pipe")
+            new prefabNamePair(pipeStraight, "pipe", new float[]{0.0f * Mathf.Deg2Rad, 180.0f * Mathf.Deg2Rad}),
+            new prefabNamePair(pipeCorner, "pipe", new float[]{0.0f* Mathf.Deg2Rad, 90.0f * Mathf.Deg2Rad})
         };
 
         startPos = new Vector2(-4, 4);
@@ -73,7 +75,7 @@ public class GridSpawner : MonoBehaviour
                 Transform pipe = Instantiate<Transform>(curPair.prefab, pos, Quaternion.identity);
                 pipe.parent = grid[x, y];
                 //sets the content field of the FrameBehaviour instance
-                pipe.parent.GetComponent<FrameBehaviour>().SetContent(curPair.name);
+                pipe.parent.GetComponent<FrameBehaviour>().SetContent(curPair.name, curPair.angles);
             }
         }
     }
