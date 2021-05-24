@@ -9,8 +9,9 @@ public class GridSpawner : MonoBehaviour
     public Transform pipeCorner;
 
     [HideInInspector]
-    public Transform[,] grid;
-    Vector2Int gridSize;
+    public static Transform[,] grid;
+    [HideInInspector]
+    public static Vector2Int gridSize;
     Vector2 startPos;
 
     Transform[] pipes;

@@ -14,8 +14,8 @@ public class FrameBehaviour : MonoBehaviour
 
     void Start()
     {
-        contentTransform = transform.GetChild(0).transform;
-        FindObjectOfType<ClickHandler>().onClickEvent += ReceiveClickEvent;
+        contentTransform = transform.GetChild(1).transform;
+        FindObjectOfType<ClickHandler>().onMouseClickEvent += ReceiveClickEvent;
     }
 
     public void HandleOnClick()
@@ -74,5 +74,13 @@ public class FrameBehaviour : MonoBehaviour
         {
             HandleOnClick();
         }
+    }
+
+    public void SetContentFull()
+    {
+        for (int i = 0; i < contentTransform.childCount; i++)
+        {
+            contentTransform.GetChild(i).GetComponent<SpriteRenderer>().color = Color.cyan;
+        };
     }
 }
