@@ -6,14 +6,18 @@ using Utilities;
 public class FrameBehaviour : MonoBehaviour
 {
     [HideInInspector]
-    public Vector2[] openings;
+    public Vector2Int[] openings;
     float[] openingAngles;
 
     ContentManager.Thing content;
     Transform contentTransform;
 
+    [HideInInspector]
+    public bool full;
+
     void Start()
     {
+        full = false;
         contentTransform = transform.GetChild(1).transform;
         FindObjectOfType<ClickHandler>().onMouseClickEvent += ReceiveClickEvent;
     }
@@ -42,16 +46,7 @@ public class FrameBehaviour : MonoBehaviour
         }
         for (int i = 0; i < openings.Length; i++)
         {
-            openings[i] = new Vector2(Mathf.Cos(openingAngles[i]), Mathf.Sin(openingAngles[i]));
-        }
-
-        foreach (var a in openingAngles)
-        {
-            Debug.Log(a * Mathf.Rad2Deg);
-        }
-        foreach (var a in openings)
-        {
-            Debug.Log(a);
+            openings[i] = new Vector2Int((int)Mathf.Cos(openingAngles[i]), (int)Mathf.Sin(openingAngles[i]));
         }
     }
 
@@ -59,10 +54,10 @@ public class FrameBehaviour : MonoBehaviour
     {
         content = ContentManager.stringToEnum[con];
         openingAngles = angles;
-        openings = new Vector2[]
+        openings = new Vector2Int[]
         {
-            new Vector2(Mathf.Cos(openingAngles[0]), Mathf.Sin(openingAngles[0])),
-            new Vector2(Mathf.Cos(openingAngles[1]), Mathf.Sin(openingAngles[1]))
+            new Vector2Int((int)Mathf.Cos(openingAngles[0]), (int)Mathf.Sin(openingAngles[0])),
+            new Vector2Int((int)Mathf.Cos(openingAngles[1]), (int)Mathf.Sin(openingAngles[1]))
         };
     }
 
@@ -78,6 +73,7 @@ public class FrameBehaviour : MonoBehaviour
 
     public void SetContentFull()
     {
+        full = true;
         for (int i = 0; i < contentTransform.childCount; i++)
         {
             contentTransform.GetChild(i).GetComponent<SpriteRenderer>().color = Color.cyan;

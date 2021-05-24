@@ -19,22 +19,61 @@ public class FluidTracker : MonoBehaviour
         onKeySpaceDown();
     }
 
-    IEnumerator PourFluid()
+    IEnumerator PourFluid(int x, int y)
     {
-        Debug.Log(gridSize.ToString());
-        for (int x = 0; x < gridSize.x; x++)
+        int xInd = x;
+        int yInd = y;
+        FrameBehaviour curFrame = grid[x, y].GetComponent<FrameBehaviour>();
+        Vector2Int nextFrameDir = curFrame.openings[0];
+        curFrame.SetContentFull();
+
+        while (true)
         {
-            for (int y = 0; y < gridSize.y; y++)
+            if (!checkDir(xInd, yInd, nextFrameDir))
             {
-                grid[x, y].GetComponent<FrameBehaviour>().SetContentFull();
-                yield return new WaitForEndOfFrame();
+                nextFrameDir = curFrame.openings[1];
             }
+            if (!checkDir(xInd, yInd, nextFrameDir))
+            {
+                break;
+            }
+            xInd = x + nextFrameDir.x;
+            yInd = y + nextFrameDir.y;
+
+            curFrame = grid[xInd, yInd].GetComponent<FrameBehaviour>();
+            nextFrameDir = curFrame.openings[0];
+            curFrame.SetContentFull();
+
+            yield return new WaitForEndOfFrame();
         }
+    }
+
+    bool checkDir(int x, int y, Vector2Int dir)
+    {
+        bool ok = false;
+        bool notOutOfBounds = (x + dir.x >= 0 && x + dir.x < gridSize.x) &&
+                              (y + dir.y >= 0 && y + dir.y < gridSize.y);
+        if (notOutOfBounds)
+        {
+            FrameBehaviour frame = grid[x + dir.x, y + dir.y].GetComponent<FrameBehaviour>();
+            bool connected = false;
+            foreach (Vector2Int o in frame.openings)
+            {
+                connected = o.Equals(dir);
+            }
+            Debug.Log(connected);
+            foreach (Vector2 a in frame.openings)
+            {
+                Debug.Log(a);
+            }
+            Debug.Log(dir);
+            ok = !frame.full && connected;
+        }
+        return ok;
     }
 
     void onKeySpaceDown()
     {
-        Debug.Log("Space!");
-        StartCoroutine(PourFluid());
+        StartCoroutine(PourFluid(0, 0));
     }
 }
