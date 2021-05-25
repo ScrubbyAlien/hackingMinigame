@@ -59,10 +59,13 @@ public class FluidTracker : MonoBehaviour
             bool connected = false;
             foreach (Vector2Int o in frame.openings)
             {
-                connected = o.Equals(dir);
+                if (frame.transform.position + new Vector3(o.x, o.y, 0) == grid[x, y].transform.position)
+                {
+                    connected = true;
+                }
             }
             Debug.Log(connected);
-            foreach (Vector2 a in frame.openings)
+            foreach (Vector2Int a in frame.openings)
             {
                 Debug.Log(a);
             }

@@ -7,13 +7,15 @@ namespace Utilities
         public enum Thing
         {
             Pipe,
-            Bomb
+            Bomb,
+            Start
         }
 
         public static IDictionary<string, Thing> stringToEnum = new Dictionary<string, Thing>()
         {
             {"pipe", Thing.Pipe},
-            {"bomb", Thing.Bomb}
+            {"bomb", Thing.Bomb},
+            {"start", Thing.Start}
         };
     }
 }

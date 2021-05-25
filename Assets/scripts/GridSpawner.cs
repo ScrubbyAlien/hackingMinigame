@@ -7,6 +7,7 @@ public class GridSpawner : MonoBehaviour
     public Transform framePrefab;
     public Transform pipeStraight;
     public Transform pipeCorner;
+    public Transform pipeStart;
 
     [HideInInspector]
     public static Transform[,] grid;
@@ -38,7 +39,8 @@ public class GridSpawner : MonoBehaviour
         prefabNamePairs = new List<prefabNamePair>()
         {
             new prefabNamePair(pipeStraight, "pipe", new float[]{0.0f * Mathf.Deg2Rad, 180.0f * Mathf.Deg2Rad}),
-            new prefabNamePair(pipeCorner, "pipe", new float[]{0.0f* Mathf.Deg2Rad, 90.0f * Mathf.Deg2Rad})
+            new prefabNamePair(pipeCorner, "pipe", new float[]{0.0f * Mathf.Deg2Rad, 90.0f * Mathf.Deg2Rad}),
+            new prefabNamePair(pipeStart, "start", new float[]{0.0f * Mathf.Deg2Rad, 0.0f * Mathf.Deg2Rad})
         };
 
         startPos = new Vector2(-4, 4);
@@ -79,5 +81,11 @@ public class GridSpawner : MonoBehaviour
                 pipe.parent.GetComponent<FrameBehaviour>().SetContent(curPair.name, curPair.angles);
             }
         }
+    }
+
+    void CreateStartPipe(Transform[,] grid)
+    {
+        Vector2 startPos = (Vector2)grid[0, 0].transform.localPosition + Vector2.left;
+
     }
 }
